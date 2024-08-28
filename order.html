@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Machine - Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://wallpapers.com/images/hd/coffee-background-mxi5tjwxedm9bx0r.jpg');
+            background-size: cover;
+            width: 100%;
+            height: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .coins, .report {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .coins p, .report p, .result p {
+            color: #333;
+        }
+        button {
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e65c00;
+        }
+        .hidden {
+            display: none;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Your Coffee</h1>
+        <div class="coins">
+            <h2>Insert Coins</h2>
+            <p>How many 1 rupee coins?: <input type="number" id="coin1" value="0" min="0"></p>
+            <p>How many 2 rupee coins?: <input type="number" id="coin2" value="0" min="0"></p>
+            <p>How many 5 rupee coins?: <input type="number" id="coin5" value="0" min="0"></p>
+            <p>How many 10 rupee coins?: <input type="number" id="coin10" value="0" min="0"></p>
+            <button onclick="processCoins()">Submit</button>
+        </div>
+        <div class="report hidden">
+            <h2>Report</h2>
+            <p id="water">Water: 300ml</p>
+            <p id="milk">Milk: 200ml</p>
+            <p id="coffee">Coffee: 100g</p>
+            <p id="money">Money: 0</p>
+        </div>
+        <div class="result hidden">
+            <h2>Your Order</h2>
+            <p id="coffeeReady"></p>
+            <p id="change"></p>
+        </div>
+        <p id="message" class="hidden"></p>
+    </div>
+
+    <script>
+        const MENU = {
+            'espresso': { 'ingredients': { 'water': 50, 'coffee': 18 }, 'cost': 100 },
+            'latte': { 'ingredients': { 'water': 200, 'milk': 150, 'coffee': 24 }, 'cost': 80 },
+            'cappuccino': { 'ingredients': { 'water': 250, 'milk': 100, 'coffee': 24 }, 'cost': 75 },
+            'turkish': { 'ingredients': { 'water': 150, 'milk': 80, 'coffee': 20 }, 'cost': 95 },
+            'ristretto': { 'ingredients': { 'water': 300, 'milk': 80, 'coffee': 25 }, 'cost': 90 },
+            'mocha': { 'ingredients': { 'water': 350, 'milk': 80, 'coffee': 30 }, 'cost': 120 }
+        };
+
+        let profit = 0;
+        const resources = { 'water': 1000, 'milk': 1000, 'coffee': 1000 };
+        let currentOrder = null;
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const drink = urlParams.get('drink');
+            currentOrder = drink;
+            if (currentOrder) {
+                const drinkData = MENU[currentOrder];
+                if (!isResourceSufficient(drinkData.ingredients)) {
+                    alert(`Sorry, there is not enough resources to make ${currentOrder}.`);
+                    window.location.href = 'index.html';
+                }
+            } else {
+                alert("No drink selected");
+                window.location.href = 'index.html';
+            }
+        };
+
+        function isResourceSufficient(orderIngredients) {
+            for (let item in orderIngredients) {
+                if (orderIngredients[item] > resources[item]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function processCoins() {
+            const coin1 = parseInt(document.getElementById('coin1').value) * 1 || 0;
+            const coin2 = parseInt(document.getElementById('coin2').value) * 2 || 0;
+            const coin5 = parseInt(document.getElementById('coin5').value) * 5 || 0;
+            const coin10 = parseInt(document.getElementById('coin10').value) * 10 || 0;
+            const total = coin1 + coin2 + coin5 + coin10;
+
+            const drinkCost = MENU[currentOrder].cost;
+            if (total >= drinkCost) {
+                const change = total - drinkCost;
+                profit += drinkCost;
+                makeCoffee(currentOrder, MENU[currentOrder].ingredients);
+                displayResult(`Here is your ${currentOrder}`, `Your change is: ${change}`);
+                updateReport();
+            } else {
+                displayResult('Sorry, that is not enough money.', 'Money refunded.');
+            }
+            document.querySelector('.coins').classList.add('hidden');
+        }
+
+        function makeCoffee(drinkName, orderIngredients) {
+            for (let item in orderIngredients) {
+                resources[item] -= orderIngredients[item];
+            }
+        }
+
+        function updateReport() {
+            document.getElementById('water').innerText = `Water: ${resources.water}ml`;
+            document.getElementById('milk').innerText = `Milk: ${resources.milk}ml`;
+            document.getElementById('coffee').innerText = `Coffee: ${resources.coffee}g`;
+            document.getElementById('money').innerText = `Money: ${profit}`;
+            document.querySelector('.report').classList.remove('hidden');
+        }
+
+        function displayResult(coffeeMessage, changeMessage) {
+            document.getElementById('coffeeReady').innerText = coffeeMessage;
+            document.getElementById('change').innerText = changeMessage;
+            document.querySelector('.result').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
