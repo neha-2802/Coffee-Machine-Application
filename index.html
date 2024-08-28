@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Machine - Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://wallpapers.com/images/hd/coffee-background-mxi5tjwxedm9bx0r.jpg');
+            background-size: cover;
+            width: 100%;
+            height: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .menu-item {
+            text-align: center;
+            flex: 1;
+            margin: 10px;
+        }
+        .menu-item h2 {
+            color: #555;
+        }
+        .menu-item p {
+            color: #777;
+        }
+        .menu-item button {
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .menu-item button:hover {
+            background-color: #e65c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Coffee Machine</h1>
+        <div class="menu">
+            <div class="menu-item">
+                <h2>Espresso</h2>
+                <img src="https://tse1.mm.bing.net/th?id=OIP.Zduw70oFBDsKyr19ojj5TgAAAA&pid=Api&P=0&h=180" alt="Espresso" width="180" height="180" style="border-radius:35%">
+                <p>Cost: 100</p>
+                <button onclick="selectDrink('espresso')">Order</button>
+            </div>
+            <div class="menu-item">
+                <h2>Latte</h2>
+                <img src="https://www.allrecipes.com/thmb/Wh0Qnynwdxok4oN0NZ1Lz-wl0A8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/9428203-9d140a4ed1424824a7ddd358e6161473.jpg" alt="Latte" width="180" height="180" style="border-radius:35%">
+                <p>Cost: 80</p>
+                <button onclick="selectDrink('latte')">Order</button>
+            </div>
+            <div class="menu-item">
+                <h2>Cappuccino</h2>
+                <img src="https://tse4.mm.bing.net/th?id=OIP.7Yw5Clk39WlQzi1H58wa3gHaHa&pid=Api&P=0&h=180" alt="Cappuccino" width="180" height="180" style="border-radius:35%">
+                <p>Cost: 75</p>
+                <button onclick="selectDrink('cappuccino')">Order</button>
+            </div>
+        </div>
+        <div class="menu">
+            <div class="menu-item">
+                <h2>Turkish Coffee</h2>
+                <img src="https://perfectdailygrind.com/wp-content/uploads/2019/11/7053045385_96bd088e72_k.jpg" alt="Turkish Coffee" width="180" height="180" style="border-radius:35%">
+                <p>Cost: 95</p>
+                <button onclick="selectDrink('turkish')">Order</button>
+            </div>
+            <div class="menu-item">
+                <h2>Ristretto</h2>
+                <img src="https://perfectdailygrind.com/wp-content/uploads/2020/06/Ristretto-3.jpg" alt="Ristretto" width="180" height="180" style="border-radius:35%">
+                <p>Cost: 90</p>
+                <button onclick="selectDrink('ristretto')">Order</button>
+            </div>
+            <div class="menu-item">
+                <h2>Mocha</h2>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWWi1J7zxNNLU9VQa_WYclwb2w9UNDo2mA0w&s" alt="Mocha" width="180" height="180" style="border-radius:35%">
+                <p>Cost: 120</p>
+                <button onclick="selectDrink('mocha')">Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectDrink(drink) {
+            window.location.href = `order.html?drink=${drink}`;
+        }
+    </script>
+</body>
+</html>
